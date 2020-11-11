@@ -15,17 +15,18 @@ function setup() {
 }
 
 function draw() {
-  alpha(70)
-  background(250)
-  drawGrid()
-  drawAxis()
-  drawPoints()
-  if(derivatives.length) {
-    drawLinear(m,t)
-  }
-  if(!messageClicked) {
-    drawStartMessage()
-  }
+  // alpha(70)
+  // background(250)
+  // drawGrid()
+  // drawAxis()
+  // drawPoints()
+  // if(derivatives.length) {
+  //   drawLinear(m,t)
+  // }
+  // if(!messageClicked) {
+  //   drawStartMessage()
+  // }
+
 }
 
 /* Draw Functions */
@@ -106,16 +107,16 @@ function drawStartMessage() {
 /* Functionalities */
 
 function mouseClicked() {
-  if(points.length < 5 && messageClicked) {
-    cor = toOld(mouseX,mouseY)
-    points = points.concat({x: cor[0], y: cor[1]})
-  } else if (points.length === 5){
-    gradientDescent()
-  }
-  if(mouseX > width/2+(250 < width/2 ? 215 : width/2 - 45) && mouseX < width/2+(250 < width/2 ? 240 : width/2 - 20) && mouseY > height/2-65 && mouseY < height/2-40) {
-    messageClicked = true
-    window.localStorage.setItem('messageClicked', true)
-  }
+  // if(points.length < 5 && messageClicked) {
+  //   cor = toOld(mouseX,mouseY)
+  //   points = points.concat({x: cor[0], y: cor[1]})
+  // } else if (points.length === 5){
+  //   gradientDescent()
+  // }
+  // if(mouseX > width/2+(250 < width/2 ? 215 : width/2 - 45) && mouseX < width/2+(250 < width/2 ? 240 : width/2 - 20) && mouseY > height/2-65 && mouseY < height/2-40) {
+  //   messageClicked = true
+  //   window.localStorage.setItem('messageClicked', true)
+  // }
 }
 
 function windowResized() {
