@@ -9,6 +9,8 @@ let stepSizeM = 1
 let stepSizeT = 1
 let totalSteps = 0
 let messageClicked = window.localStorage.getItem('messageClicked') || false
+let x = 0
+let y = 0
 
 function setup() {
   createCanvas(width, height);
@@ -26,7 +28,13 @@ function draw() {
   // if(!messageClicked) {
   //   drawStartMessage()
   // }
-
+  clear()
+  if(y < 1000) {
+    y += 1
+    x += 1
+  }
+  strokeWeight(10)
+  point(x,y)
 }
 
 /* Draw Functions */
