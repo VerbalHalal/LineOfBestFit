@@ -8,12 +8,16 @@ let learningRate = 0.0000001
 let stepSizeM = 1
 let stepSizeT = 1
 let totalSteps = 0
-let messageClicked = window.localStorage.getItem('messageClicked') || false
-let x = 0
-let y = 0
+let messageClicked = false
+let startFrameGrid = null
+let startFrameAxis = null
+let yesnt = false
 
 function setup() {
   createCanvas(width, height);
+  setTimeout(() => {
+    yesnt = true
+  }, 1500)
 }
 
 function draw() {
@@ -29,37 +33,49 @@ function draw() {
   //   drawStartMessage()
   // }
   clear()
-  if(y < 1000) {
-    y += 1
-    x += 1
-  }
   strokeWeight(10)
-  point(x,y)
+  resetStroke()
+  if(messageClicked) {
+    drawGrid()
+    drawAxis()
+  } else {
+    drawStartMessage()
+  }
 }
 
 /* Draw Functions */
 
 function drawGrid() {
   stroke(getStroke('grid'))
-  for(var x = 1; x < width/50; x++) {
-    line(width/2+x*25,0,width/2+x*25,height)
-    line(width/2-x*25,0,width/2-x*25,height)
-  }
-  for(var x = 1; x < height/50; x++) {
-    line(0,height/2+x*25,width,height/2+x*25)
-    line(0,height/2-x*25,width,height/2-x*25)
+  if(startFrameGrid !== null) {
+    for(var x = 1; x < width/50; x++) {
+      line(useRange(width/2,width/2+x*25,90,startFrameGrid),0,useRange(width/2,width/2+x*25,90,startFrameGrid),height)
+      line(useRange(width/2,width/2-x*25,90,startFrameGrid),0,useRange(width/2,width/2-x*25,90,startFrameGrid),height)
+    }
+    for(var x = 1; x < height/50; x++) {
+      line(0,useRange(height/2,height/2+x*25,90,startFrameGrid),width,useRange(height/2,height/2+x*25,90,startFrameGrid))
+      line(0,useRange(height/2,height/2-x*25,90,startFrameGrid),width,useRange(height/2,height/2-x*25,90,startFrameGrid))
+    }
+  } else {
+    startFrameGrid = frameCount
   }
   resetStroke()
 }
 
 
 function drawAxis() {
-  strokeWeight(4)
-  stroke(getStroke('axisY'))
-  line(width/2,0,width/2,height)
-  stroke(getStroke('axisX'))
-  line(0,height/2,width,height/2)
-  resetStroke()
+  if(startFrameAxis !== null) {
+    strokeWeight(4)
+    stroke(getStroke('axisY'))
+    line(width/2,0,width/2,useRange(0,height,90,startFrameAxis))
+    stroke(getStroke('axisX'))
+    line(0,height/2,useRange(0,width,90,startFrameAxis),height/2)
+    resetStroke()
+  } else {
+    startFrameAxis = frameCount
+    console.log(startFrameAxis)
+  }
+  
 }
 
 function drawLinear(m,t) {
@@ -121,10 +137,10 @@ function mouseClicked() {
   // } else if (points.length === 5){
   //   gradientDescent()
   // }
-  // if(mouseX > width/2+(250 < width/2 ? 215 : width/2 - 45) && mouseX < width/2+(250 < width/2 ? 240 : width/2 - 20) && mouseY > height/2-65 && mouseY < height/2-40) {
-  //   messageClicked = true
-  //   window.localStorage.setItem('messageClicked', true)
-  // }
+  if(mouseX > width/2+(250 < width/2 ? 215 : width/2 - 45) && mouseX < width/2+(250 < width/2 ? 240 : width/2 - 20) && mouseY > height/2-65 && mouseY < height/2-40) {
+     messageClicked = true
+     window.localStorage.setItem('messageClicked', true)
+  }
 }
 
 function windowResized() {
@@ -193,4 +209,8 @@ function getStroke(component) {
     default:
       return 'grey'
   }
+}
+
+function useRange(start, end, frames, startFrame) {
+  return frameCount-startFrame > frames ? end : start+(end-start)/frames*(frameCount-startFrame)
 }
